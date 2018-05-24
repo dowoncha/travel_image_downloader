@@ -3,8 +3,10 @@
 Downloads all images from the Travel subreddit into an output directory
 
 ## Usage
+You need to register for a Reddit Client ID and Secret. 
+
 ```
-python app.py <# of pics>
+CLIENT_ID='YOUR CLIENT ID' CLIENT_SECRET='YOUR CLIENT SECRET' python app.py <# of pics>
 ```
 
 TODO
