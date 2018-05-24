@@ -43,7 +43,7 @@ def main():
     # How many pictures to download
     pic_count = 15
 
-    if len(sys.argv) == 2:
+    if len(sys.argv) >= 2:
         pic_count = int(sys.argv[1])
 
     # Create picture directory
@@ -54,25 +54,40 @@ def main():
     unknown_location_dir = os.path.join(picture_dir, 'unknown')
     create_dir(unknown_location_dir)
 
-    for submission in travel_subreddit.hot(limit=pic_count):
+    listing = travel_subreddit.top(limit=pic_count)
+
+    if len(sys.argv) >= 3 and sys.argv[2] == "--hot":
+        listing = travel_subreddit.hot(limit=pic_count)
+
+    # Preprocess list (remove all non image posts)
+
+    for submission in listing:
         # TODO: handle imgur links 
         # Only download jpg
         if submission.url.endswith('.jpg'):
-            words = nltk.word_tokenize(submission.title)
-            space_separated_title = ' '.join(words)
+            # Combine all comments into one text to search for correct country
+            search_str = ""
 
-            print("{}".format(space_separated_title))
-            places = geograpy.get_place_context(text=space_separated_title)
-            print(places.countries, places.country_mentions)
+            # Get all top level comments and add to search string
+            for comment in list(submission.comments):
+                if hasattr(comment, 'body'):
+                    search_str += comment.body
 
-            country = "unknown" 
+            places = geograpy.get_place_context(text=search_str)
             
             if places.countries:
-                country = places.countries[0]
+                # Get the country with the highest mentions 
+                country = max(places.country_mentions, key=lambda item:item[1])[0]
+
                 country_dir = os.path.join(picture_dir, country)
 
-                create_dir(country_dir)                    
+                create_dir(country_dir)
+            else:
+                country = "unknown"
 
+            # Clean up title for filename
+            words = nltk.word_tokenize(submission.title)
+            space_separated_title = ' '.join(words)
             underscored_title = space_separated_title.replace(' ', '_')
 
             title = re.sub(r'\W+', '', underscored_title) + '.jpg'
