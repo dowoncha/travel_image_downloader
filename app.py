@@ -54,12 +54,12 @@ def main():
     unknown_location_dir = os.path.join(picture_dir, 'unknown')
     create_dir(unknown_location_dir)
 
-    listing = travel_subreddit.top(limit=pic_count)
+    listing = travel_subreddit.hot(limit=pic_count)
 
-    if len(sys.argv) >= 3 and sys.argv[2] == "--hot":
-        listing = travel_subreddit.hot(limit=pic_count)
+    if len(sys.argv) >= 3 and sys.argv[2] == "--top":
+        listing = travel_subreddit.top(limit=pic_count)
 
-    # Preprocess list (remove all non image posts)
+    # TODO: Preprocess list (remove all non image posts)
 
     for submission in listing:
         # TODO: handle imgur links 
