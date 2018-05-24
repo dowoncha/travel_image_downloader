@@ -14,7 +14,7 @@ pip install -r requirements.txt
 You need to register for a Reddit Client ID and Secret. 
 
 ```
-CLIENT_ID='YOUR CLIENT ID' CLIENT_SECRET='YOUR CLIENT SECRET' python app.py <# of pics> [--hot]
+CLIENT_ID='YOUR CLIENT ID' CLIENT_SECRET='YOUR CLIENT SECRET' python app.py <# of pics> [--top]
 ```
 
 TODO
