@@ -35,18 +35,24 @@ def save_image(filepath, url):
 
         print("File {} created".format(filepath))
 
+def create_dir(dir):
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
 def main():
     # How many pictures to download
     pic_count = 15
 
     if len(sys.argv) == 2:
-        pic_count = sys.argv[1]
+        pic_count = int(sys.argv[1])
 
     # Create picture directory
     picture_dir = os.path.join(os.getcwd(), 'pics')
+    create_dir(picture_dir)
 
-    if not os.path.exists(picture_dir):
-        os.makedirs(picture_dir)
+    # Create unknown location directory
+    unknown_location_dir = os.path.join(picture_dir, 'unknown')
+    create_dir(unknown_location_dir)
 
     for submission in travel_subreddit.hot(limit=pic_count):
         # TODO: handle imgur links 
@@ -59,12 +65,20 @@ def main():
             places = geograpy.get_place_context(text=space_separated_title)
             print(places.countries, places.country_mentions)
 
+            country = "unknown" 
+            
+            if places.countries:
+                country = places.countries[0]
+                country_dir = os.path.join(picture_dir, country)
+
+                create_dir(country_dir)                    
+
             underscored_title = space_separated_title.replace(' ', '_')
 
             title = re.sub(r'\W+', '', underscored_title) + '.jpg'
-            filepath = os.path.join(picture_dir, title)
+            filepath = os.path.join(picture_dir, country, title)
 
-            # save_image(filepath, submission.url)
+            save_image(filepath, submission.url)
 
 if __name__ == "__main__":
     sys.exit(main())
