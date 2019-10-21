@@ -10,7 +10,7 @@ jellyfish==0.6.1
 jieba3k==0.35.1
 lxml==4.2.1
 newspaper3k==0.2.6
-nltk==3.3
+nltk==3.4.5
 numpy==1.14.3
 Pillow==5.1.0
 praw==5.4.0
