@@ -17,7 +17,7 @@ praw==5.4.0
 prawcore==0.14.0
 pycountry==18.5.20
 python-dateutil==2.7.3
-PyYAML==3.12
+PyYAML==5.4
 requests==2.18.4
 requests-file==1.4.3
 six==1.11.0
